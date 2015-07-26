@@ -11,7 +11,8 @@
     xmlns:converters="using:Webim_Client.Converters"
     mc:Ignorable="d"
     DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    NavigationCacheMode="Required">
 
     <Page.Transitions>
         <TransitionCollection>
@@ -27,7 +28,7 @@
         <Style x:Key="ListViewItemsStyle" TargetType="ListViewItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         </Style>
-        
+
         <converters:MessageTimestampConverter x:Key="TimestampConverter"/>
         <converters:MessageImageConverter x:Key="MessageImageConverter"/>
 
@@ -54,7 +55,7 @@
                            Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right"/>
             </Grid>
         </DataTemplate>
-        
+
         <DataTemplate x:Key="VisitorImageMessageTemplate">
             <Grid Margin="2">
                 <Grid.ColumnDefinitions>
@@ -98,7 +99,7 @@
                            Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right"/>
             </Grid>
         </DataTemplate>
-        
+
         <DataTemplate x:Key="OperatorImageMessageTemplate">
             <Grid Margin="2">
                 <Grid.ColumnDefinitions>
@@ -109,7 +110,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                
+
                 <Image Source="{Binding Converter={StaticResource MessageImageConverter}}"
                        Stretch="Uniform"
                        Grid.Row="0" Grid.Column="0"/>
@@ -119,7 +120,7 @@
                            Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right"/>
             </Grid>
         </DataTemplate>
-        
+
         <DataTemplate x:Key="SystemMessageTemplate">
             <Grid Margin="2,2,2,2" HorizontalAlignment="Stretch" VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
@@ -173,7 +174,9 @@
                               Loaded="RealtimeChatListView_Loaded"
                               ItemsSource="{Binding Messages}"
                               ItemTemplateSelector="{StaticResource MessageOwnerDataTemplateSelector}"
-                              IsItemClickEnabled="False"
+                              IsItemClickEnabled="True"
+                              SelectionMode="Single"
+                              ItemClick="RealtimeChatListView_ItemClick"
                               ContinuumNavigationTransitionInfo.ExitElementContainer="True"
                               ItemContainerStyle="{StaticResource ListViewItemsStyle}">
                     </ListView>

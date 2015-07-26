@@ -149,7 +149,7 @@ namespace Webim_Client
             {
                 WMSession session = WebimController.Instance.RealtimeSession;
                 bool chatClosed = IsChatClosed(session);
-                _startChatBarButton.IsEnabled = chatClosed;
+                _startChatBarButton.IsEnabled = chatClosed && session.HasOnlineOperators;
                 _closeChatBarButton.IsEnabled = !chatClosed;
                 _sendMessageBarButton.IsEnabled = !chatClosed;
                 _attachImageBarButton.IsEnabled = !chatClosed;
@@ -208,7 +208,7 @@ namespace Webim_Client
             {
                 return;
             }
-            
+
             StorageFile file = args.Files[0];
             WMSession session = WebimController.Instance.RealtimeSession;
             // TODO: continue session
@@ -460,6 +460,26 @@ namespace Webim_Client
             }
             WMSession session = WebimController.Instance.RealtimeSession;
             await session.SetComposingMessageAsync(true);
+        }
+
+        private async void RealtimeChatListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            WMMessage message = e.ClickedItem as WMMessage;
+            if (message == null || string.IsNullOrEmpty(message.AuthorID))
+            {
+                return;
+            }
+            if (!(message.Kind == WMMessage.WMMessageKind.WMMessageKindOperator || message.Kind == WMMessage.WMMessageKind.WMMessageKindFileFromOperator))
+            {
+                return;
+            }
+            RatingPage ratingView = new RatingPage();
+            await ratingView.ShowAsync();
+            if (ratingView.Result.Canceled)
+            {
+                return;
+            }
+            await WebimController.Instance.RealtimeSession.RateOperatorWithRateAsync(message.AuthorID, ratingView.Result.rate);
         }
     }
 }
