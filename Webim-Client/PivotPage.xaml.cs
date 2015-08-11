@@ -208,7 +208,7 @@ namespace Webim_Client
             {
                 return;
             }
-
+            
             StorageFile file = args.Files[0];
             WMSession session = WebimController.Instance.RealtimeSession;
             // TODO: continue session
@@ -465,12 +465,11 @@ namespace Webim_Client
         private async void RealtimeChatListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             WMMessage message = e.ClickedItem as WMMessage;
-            if (message == null || string.IsNullOrEmpty(message.AuthorID))
+            if (message == null || string.IsNullOrEmpty(message.SenderUID))
             {
                 return;
             }
-            if (!(message.Kind == WMMessage.WMMessageKind.WMMessageKindOperator || message.Kind == WMMessage.WMMessageKind.WMMessageKindFileFromOperator))
-            {
+            if (!(message.Kind == WMMessage.WMMessageKind.WMMessageKindOperator || message.Kind == WMMessage.WMMessageKind.WMMessageKindFileFromOperator)) {
                 return;
             }
             RatingPage ratingView = new RatingPage();
@@ -479,7 +478,7 @@ namespace Webim_Client
             {
                 return;
             }
-            await WebimController.Instance.RealtimeSession.RateOperatorWithRateAsync(message.AuthorID, ratingView.Result.rate);
+            await WebimController.Instance.RealtimeSession.RateOperatorWithRateAsync(message.SenderUID, ratingView.Result.rate);
         }
     }
 }

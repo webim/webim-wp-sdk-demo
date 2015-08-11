@@ -58,6 +58,7 @@ namespace Webim_Client.DataModel
                 fakeMessage.Text = "We are happy to see you here. What can I help you with?";
                 fakeMessage.Timestamp = DateTime.Now;
                 fakeMessage.Ts = 0;
+                fakeMessage.SetSenderDetails("1", "Operator", null);
                 Messages.Add(fakeMessage);
 
                 fakeMessage = new WMMessage();
